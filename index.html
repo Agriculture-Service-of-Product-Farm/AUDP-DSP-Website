@@ -97,6 +97,46 @@
       </ul>
     </section>
 
+    
+    <section id="applications" class="wrap reveal">
+      <h2>Agricultural applications</h2>
+      <p>AUDP-DSP supports research into processing measurement signals from agricultural instruments and sensors. Typical areas include:</p>
+      <div class="grid three">
+        <div class="card"><h3>Soil and water</h3><p>Time-series analysis of moisture, level, and quality measurements.</p></div>
+        <div class="card"><h3>Weather and climate</h3><p>Processing of temperature, humidity, rainfall, and related instrument data.</p></div>
+        <div class="card"><h3>Machinery and vibration</h3><p>Analysis of vibration and condition signals from agricultural equipment.</p></div>
+        <div class="card"><h3>Aerial and remote sensing</h3><p>Support for research with data from drones and remote platforms.</p></div>
+        <div class="card"><h3>Controlled simulation</h3><p>Generation of defined waveforms and noise for method validation.</p></div>
+        <div class="card"><h3>Feature extraction</h3><p>Research into identifying events, trends, and anomalies in signals.</p></div>
+      </div>
+    </section>
+
+    <section id="approach" class="wrap reveal">
+      <h2>Research platform</h2>
+      <p>AUDP-DSP is designed as an independent research and engineering platform for mathematical signal processing. It can support later integration with other ASPF systems, but its signal-processing methods do not depend on any specific networking protocol.</p>
+      <div class="table-scroll"><table>
+        <thead><tr><th>Principle</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Mathematical foundation</td><td>Algorithms are defined from first principles with explicit conventions</td></tr>
+          <tr><td>Reproducibility</td><td>Controlled experiments with known inputs and measurable numerical behavior</td></tr>
+          <tr><td>Traceability</td><td>Clear separation of measured observations, signal representations, and analytical results</td></tr>
+          <tr><td>Validation</td><td>Reconstruction error, statistical checks, and automated tests where applicable</td></tr>
+          <tr><td>Confidentiality</td><td>Core algorithms, source structure, and internal specifications remain private</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="quality" class="wrap reveal">
+      <h2>Engineering quality</h2>
+      <ul class="checks">
+        <li>Numerical results are checked against defined tolerances and reconstruction criteria.</li>
+        <li>Invalid or inconsistent input is rejected rather than silently corrupted.</li>
+        <li>Automated tests cover representative cases including edge lengths and short signals.</li>
+        <li>Build and test procedures are documented for controlled reproduction.</li>
+        <li>Dependencies and licenses are recorded; no external telemetry or network calls from the library.</li>
+      </ul>
+    </section>
+
     <section id="security" class="wrap reveal">
       <h2>Security & contact</h2>
       <p>Found a vulnerability? Please report it privately by email to
