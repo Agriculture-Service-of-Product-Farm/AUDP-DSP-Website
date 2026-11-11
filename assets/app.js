@@ -61,7 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-/* --------------------------------------------------------------- waveform demo */
+
+/* --------------------------------------------------------------- advanced waveform demo */
 (function initDemo() {
   const box = document.getElementById("demo-app");
   if (!box) return;
@@ -74,21 +75,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const noiseOut = document.getElementById("demo-noise-out");
   const smoothIn = document.getElementById("demo-smooth");
   const smoothOut = document.getElementById("demo-smooth-out");
+  const viewSel = document.getElementById("demo-view");
   const canvas = document.getElementById("demo-canvas");
   const spec = document.getElementById("demo-spectrum");
+  const fall = document.getElementById("demo-waterfall");
+  const timeWrap = document.getElementById("demo-time-wrap");
+  const specWrap = document.getElementById("demo-spec-wrap");
+  const fallWrap = document.getElementById("demo-fall-wrap");
   const ctx = canvas.getContext("2d");
   const sctx = spec.getContext("2d");
-  let animating = false;
-  let phase = 0;
-  let raf = null;
+  const fctx = fall.getContext("2d");
+  let animating = false, paused = false, phase = 0, raf = null;
+  const history = [];
+  const MAX_HIST = 48;
 
   function sample(t, type, freq, noise) {
     let s = 0;
     if (type === "chirp") {
-      const f0 = Math.max(1, freq * 0.3);
-      const f1 = freq * 2;
-      const k = (f1 - f0) / 1.0;
+      const f0 = Math.max(1, freq * 0.25);
+      const f1 = freq * 2.2;
+      const k = (f1 - f0);
       s = Math.sin(2 * Math.PI * (f0 * t + 0.5 * k * t * t));
+    } else if (type === "modulated") {
+      s = Math.sin(2 * Math.PI * freq * t) * (0.6 + 0.4 * Math.sin(2 * Math.PI * freq * 0.15 * t));
     } else {
       const w = 2 * Math.PI * freq * t;
       if (type === "sine") s = Math.sin(w);
@@ -96,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
       else if (type === "triangle") s = (2 / Math.PI) * Math.asin(Math.sin(w));
       else s = Math.sin(w);
     }
-    return Math.max(-1.3, Math.min(1.3, s + (Math.random() * 2 - 1) * noise));
+    return Math.max(-1.4, Math.min(1.4, s + (Math.random() * 2 - 1) * noise));
   }
 
   function movingAverage(arr, win) {
@@ -128,8 +137,14 @@ document.addEventListener("DOMContentLoaded", function () {
     return mag;
   }
 
+  function updateViews() {
+    const v = viewSel.value;
+    timeWrap.hidden = v === "spectrum" || v === "waterfall";
+    specWrap.hidden = v === "time" || v === "waterfall";
+    fallWrap.hidden = v !== "waterfall";
+  }
+
   function draw() {
-    const w = canvas.width, h = canvas.height;
     const type = typeSel.value;
     const freq = +freqIn.value;
     const noise = +noiseIn.value;
@@ -138,38 +153,61 @@ document.addEventListener("DOMContentLoaded", function () {
     const raw = [];
     for (let i = 0; i < N; i++) raw.push(sample((i / N) + phase, type, freq, noise));
     const smooth = movingAverage(raw, win);
-
-    ctx.clearRect(0, 0, w, h);
-    // center
-    ctx.strokeStyle = "rgba(128,128,128,0.25)";
-    ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
-
-    function plot(data, color) {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      for (let i = 0; i < data.length; i++) {
-        const x = (i / (data.length - 1)) * w;
-        const y = h / 2 - (data[i] / 1.3) * (h / 2 - 8);
-        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    }
-    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0b6fae";
-    plot(raw, accent);
-    plot(smooth, "#2e9e3a");
-
-    // spectrum of smoothed
     const mag = magnitudeSpectrum(smooth);
-    const sw = spec.width, sh = spec.height;
-    sctx.clearRect(0, 0, sw, sh);
-    const maxM = Math.max(...mag, 1e-6);
-    sctx.fillStyle = accent;
-    const bins = Math.min(mag.length, 80);
-    const bw = sw / bins;
-    for (let k = 0; k < bins; k++) {
-      const bh = (mag[k] / maxM) * (sh - 12);
-      sctx.fillRect(k * bw + 1, sh - bh - 4, bw - 2, bh);
+    history.unshift(mag.slice(0, 80));
+    if (history.length > MAX_HIST) history.pop();
+
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0b6fae";
+
+    if (!timeWrap.hidden) {
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = "rgba(128,128,128,0.2)";
+      ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+      function plot(data, color, width) {
+        ctx.strokeStyle = color; ctx.lineWidth = width; ctx.beginPath();
+        for (let i = 0; i < data.length; i++) {
+          const x = (i / (data.length - 1)) * w;
+          const y = h / 2 - (data[i] / 1.4) * (h / 2 - 6);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      plot(raw, accent, 1.6);
+      plot(smooth, "#2e9e3a", 2.2);
+    }
+
+    if (!specWrap.hidden) {
+      const sw = spec.width, sh = spec.height;
+      sctx.clearRect(0, 0, sw, sh);
+      const maxM = Math.max(...mag, 1e-6);
+      const bins = Math.min(mag.length, 90);
+      const bw = sw / bins;
+      for (let k = 0; k < bins; k++) {
+        const bh = (mag[k] / maxM) * (sh - 10);
+        const hue = 190 + (k / bins) * 50;
+        sctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+        sctx.fillRect(k * bw + 1, sh - bh - 3, bw - 2, bh);
+      }
+    }
+
+    if (!fallWrap.hidden && history.length) {
+      const fw = fall.width, fh = fall.height;
+      fctx.clearRect(0, 0, fw, fh);
+      const rows = history.length;
+      const rh = fh / Math.max(rows, 1);
+      const cols = history[0].length;
+      const cw = fw / cols;
+      for (let r = 0; r < rows; r++) {
+        const row = history[r];
+        const maxM = Math.max(...row, 1e-6);
+        for (let c = 0; c < cols; c++) {
+          const v = row[c] / maxM;
+          const l = 15 + v * 55;
+          fctx.fillStyle = `hsl(200, 65%, ${l}%)`;
+          fctx.fillRect(c * cw, r * rh, cw + 0.5, rh + 0.5);
+        }
+      }
     }
   }
 
@@ -180,8 +218,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loop() {
-    if (!animating) return;
-    phase += 0.015;
+    if (!animating || paused) return;
+    phase += 0.012;
     draw();
     raf = requestAnimationFrame(loop);
   }
@@ -190,20 +228,31 @@ document.addEventListener("DOMContentLoaded", function () {
   freqIn.addEventListener("input", () => { updateLabels(); draw(); });
   noiseIn.addEventListener("input", () => { updateLabels(); draw(); });
   smoothIn.addEventListener("input", () => { updateLabels(); draw(); });
+  viewSel.addEventListener("change", () => { updateViews(); draw(); });
+
   document.getElementById("demo-animate").addEventListener("click", function () {
     animating = !animating;
+    paused = false;
     this.textContent = animating ? "Stop" : "Animate";
+    document.getElementById("demo-pause").disabled = !animating;
     if (animating) loop();
     else if (raf) cancelAnimationFrame(raf);
   });
+  document.getElementById("demo-pause").addEventListener("click", function () {
+    paused = !paused;
+    this.textContent = paused ? "Resume" : "Pause";
+    if (!paused && animating) loop();
+  });
   document.getElementById("demo-reset").addEventListener("click", () => {
-    animating = false;
+    animating = false; paused = false;
     if (raf) cancelAnimationFrame(raf);
-    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.15; smoothIn.value = 5; phase = 0;
-    updateLabels(); draw();
+    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.12; smoothIn.value = 7; viewSel.value = "both";
+    phase = 0; history.length = 0;
+    updateLabels(); updateViews(); draw();
     document.getElementById("demo-animate").textContent = "Animate";
+    document.getElementById("demo-pause").textContent = "Pause";
+    document.getElementById("demo-pause").disabled = true;
   });
 
-  updateLabels();
-  draw();
+  updateLabels(); updateViews(); draw();
 })();
