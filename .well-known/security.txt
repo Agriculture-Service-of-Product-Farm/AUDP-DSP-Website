@@ -1,0 +1,4 @@
+Contact: mailto:sbruicesingh@haclon.in
+Expires: 2027-11-11T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://agriculture-service-of-product-farm.github.io/AUDP-DSP-Website/.well-known/security.txt

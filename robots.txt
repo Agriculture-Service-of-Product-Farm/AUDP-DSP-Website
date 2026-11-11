@@ -1,2 +1,3 @@
 User-agent: *
-Disallow: /
+Allow: /
+Sitemap: https://agriculture-service-of-product-farm.github.io/AUDP-DSP-Website/sitemap.xml

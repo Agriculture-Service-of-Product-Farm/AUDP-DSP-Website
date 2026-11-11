@@ -1,103 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AUDP-DSP — Research platform for software-defined signal processing by Agriculture Service of Product Farm.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AUDP-DSP — Software-Defined Signal Processing | ASPF</title>
+  <meta name="description" content="AUDP-DSP is a software-defined signal processing research platform for agricultural sensing and waveform analysis, developed by Agriculture Service of Product Farm (ASPF).">
+  <link rel="canonical" href="https://agriculture-service-of-product-farm.github.io/AUDP-DSP-Website/">
+  <meta property="og:title" content="AUDP-DSP — Software-Defined Signal Processing">
+  <meta property="og:description" content="Research platform for mathematical signal processing supporting agricultural sensing.">
+  <meta property="og:url" content="https://agriculture-service-of-product-farm.github.io/AUDP-DSP-Website/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="Referrer-Policy" content="no-referrer">
-  <meta name="robots" content="noindex, nofollow, noarchive">
-  <title>AUDP-DSP — Software-Defined Signal Processing</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="logo-container">
-        <img src="logo.png" alt="AUDP-DSP Logo" class="logo">
-        <span class="brand">AUDP-DSP</span>
-      </div>
-      <button class="menu-toggle" aria-label="Menu">☰</button>
-      <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#areas">Focus Areas</a></li>
-        <li><a href="#platform">Platform</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </nav>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap bar">
+      <a class="brand" href="index.html"><img src="logo.png" alt="AUDP-DSP" class="brand-logo" height="30"></a>
+      <nav id="site-nav" aria-label="Primary">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="how-it-works.html">How it works</a>
+        <a href="security.html">Security</a>
+        <a href="evidence.html">Evidence</a>
+        <a href="about.html">About ASPF</a>
+      </nav>
+    </div>
   </header>
-
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <img src="logo.png" alt="AUDP-DSP" class="hero-logo">
-      <h1>AUDP-DSP</h1>
-      <p class="tagline">Software-Defined Signal Processing Research Platform</p>
-      <p class="subtitle">Agriculture Service of Product Farm</p>
-      <a href="#platform" class="cta">Explore the Platform</a>
-    </div>
-  </section>
-
-  <section id="research">
-    <h2>Scientific Research Focus</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Signal Generation</h3>
-        <p>Creation of mathematically defined signals and waveforms for research and controlled numerical simulation.</p>
+  <main id="main">
+    <section class="hero hero-home wrap">
+      <p class="eyebrow">Agriculture Service of Product Farm (ASPF) · AUDP-DSP</p>
+      <h1 class="grad">Software-defined signal processing for agricultural research.</h1>
+      <p class="lead">AUDP-DSP generates, analyzes, transforms, and reconstructs numerical signals and waveforms for research into agricultural sensing, measurement data, and related scientific applications. It is developed by <a href="about.html">Agriculture Service of Product Farm (ASPF)</a> as part of its <a href="research.html">agriculture research and innovation</a> work.</p>
+      <div class="cta">
+        <a class="btn" href="how-it-works.html">How it works</a>
+        <a class="btn ghost" href="about.html">About ASPF</a>
       </div>
-      <div class="card">
-        <h3>Signal Analysis</h3>
-        <p>Study of frequency content, amplitude, phase, energy, and statistical properties of measurement signals.</p>
+    </section>
+
+    <section class="wrap stats">
+      <div class="stat"><strong>Research</strong><span>Software-defined signal processing platform</span></div>
+      <div class="stat"><strong>Mathematical</strong><span>Signals, waveforms, and transforms</span></div>
+      <div class="stat"><strong>Agricultural</strong><span>Sensor and measurement data focus</span></div>
+      <div class="stat"><strong>Private</strong><span>Core algorithms remain confidential</span></div>
+    </section>
+
+    <section class="wrap">
+      <h2>What it is</h2>
+      <p>Agricultural instruments and sensors produce measurement signals: soil moisture time series, water levels, weather readings, machinery vibration, and data from aerial platforms. AUDP-DSP is the software layer that supports research into representing, analyzing, filtering, and reconstructing these signals using mathematical methods.</p>
+      <div class="grid three">
+        <div class="card"><h3>Generate</h3><p>Create mathematically defined signals and waveforms for controlled research experiments.</p></div>
+        <div class="card"><h3>Analyze</h3><p>Study frequency content, amplitude, phase, energy, and statistical properties.</p></div>
+        <div class="card"><h3>Transform</h3><p>Apply filtering, Fourier methods, and reconstruction techniques for research.</p></div>
       </div>
-      <div class="card">
-        <h3>Transformation & Reconstruction</h3>
-        <p>Research into filtering, Fourier methods, and reconstruction techniques for sensor and instrument data.</p>
+    </section>
+
+    <section class="wrap">
+      <h2>Focus areas</h2>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Area</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Signal generation</td><td>Mathematically defined waveforms for simulation and testing</td></tr>
+            <tr><td>Signal analysis</td><td>Frequency, amplitude, phase, energy, and statistical properties</td></tr>
+            <tr><td>Transformation</td><td>Filtering and Fourier-based methods for research</td></tr>
+            <tr><td>Agricultural sensing</td><td>Processing of sensor and instrument measurement data</td></tr>
+            <tr><td>Simulation</td><td>Controlled numerical experiments with noise and sampling</td></tr>
+          </tbody>
+        </table>
       </div>
+    </section>
+
+    <section class="wrap">
+      <h2>Research approach</h2>
+      <p>The platform emphasizes mathematical clarity, reproducible numerical behavior, and clear separation between measured observations, numerical signal representations, and derived analytical results. Detailed algorithms, source structure, and internal specifications are not published on this site. They remain in private repositories under controlled access.</p>
+      <p class="note">AUDP-DSP is proprietary research software of ASPF. This site is informational only and does not provide source code, downloads, or technical support.</p>
+    </section>
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <img src="logo.png" alt="AUDP-DSP" class="foot-brand" height="26">
+      <p>© 2026 Agriculture Service of Product Farm (ASPF). All rights reserved.</p>
+      <p class="small"><a href="about.html">About ASPF</a> · <a href="research.html">Research</a> · <a href="sbruice-singh.html">Sbruice Singh</a> · <a href="security.html">Security</a> · <a href=".well-known/security.txt">security.txt</a></p>
+      <p class="small">This site is informational. It sets no cookies and loads no third-party resources.</p>
     </div>
-  </section>
-
-  <section id="areas">
-    <h2>Research Areas</h2>
-    <div class="areas-grid">
-      <div class="area"><h3>Agricultural Sensing</h3><p>Processing of sensor and instrument data relevant to farming applications.</p></div>
-      <div class="area"><h3>Soil & Moisture</h3><p>Time series and measurement signals related to soil conditions.</p></div>
-      <div class="area"><h3>Water Monitoring</h3><p>Level, flow, and quality measurement signals.</p></div>
-      <div class="area"><h3>Weather & Climate</h3><p>Instrument data from weather stations and environmental sensors.</p></div>
-      <div class="area"><h3>Machinery</h3><p>Vibration and operational signals from agricultural equipment.</p></div>
-      <div class="area"><h3>Aerial Platforms</h3><p>Sensor streams that may be collected from drones or similar platforms.</p></div>
-    </div>
-  </section>
-
-  <section id="platform">
-    <h2>Research Platform</h2>
-    <p>AUDP-DSP is a privately developed software-defined signal processing platform under active research at Agriculture Service of Product Farm. It provides a mathematical environment for generating, analyzing, and transforming numerical signals and waveforms. All algorithms, source code, numerical contracts, and internal specifications remain confidential and are not disclosed on this public site.</p>
-    <div class="status">
-      <p><strong>Status:</strong> Active Research & Development</p>
-      <p><strong>Type:</strong> Software-defined signal processing platform</p>
-      <p><strong>Access:</strong> Private research repository</p>
-      <p><strong>Public Disclosure:</strong> None — proprietary research</p>
-    </div>
-  </section>
-
-  <section id="about">
-    <h2>About AUDP-DSP</h2>
-    <p>AUDP-DSP forms part of the scientific computing programme at Agriculture Service of Product Farm (ASPF). The platform supports research in mathematical signal processing for agricultural sensing and related measurement applications. ASPF is headquartered in Azamgarh, Uttar Pradesh, India. Official site: <a href="https://www.apservicefarm.com" style="color:var(--lime);">apservicefarm.com</a>.</p>
-    <p>Collaboration inquiries may be directed through the organization. No technical details of the signal-processing engine are published here.</p>
-  </section>
-
-  <footer>
-    <img src="logo.png" alt="ASPF AUDP-DSP" class="footer-logo">
-    <p>&copy; 2026 Agriculture Service of Product Farm. All rights reserved.</p>
-    <p>AUDP-DSP is a private research platform. No algorithms or source code are disclosed on this site.</p>
-    <p><a href="https://www.apservicefarm.com">apservicefarm.com</a> · Azamgarh, Uttar Pradesh, India</p>
   </footer>
-
-  <script>
-    document.querySelector('.menu-toggle').addEventListener('click', function() {
-      document.querySelector('.nav-links').classList.toggle('active');
-    });
-  </script>
 </body>
 </html>
