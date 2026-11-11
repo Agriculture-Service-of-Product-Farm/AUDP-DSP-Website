@@ -32,6 +32,7 @@
       </div>
       <nav id="site-nav" aria-label="Main">
         <a href="index.html" aria-current="page">Home</a>
+        <a href="index.html#demo">Live demo</a>
         <a href="how-it-works.html">How it works</a>
         <a href="security.html">Security</a>
         <a href="evidence.html">Evidence</a>
@@ -50,7 +51,8 @@
         <h1>Software-defined signal processing for <span class="grad">agricultural research.</span></h1>
         <p class="lead">AUDP-DSP generates, analyzes, transforms, and reconstructs numerical signals and waveforms for research into agricultural sensing and measurement data. It is developed by <a href="about.html">Agriculture Service of Product Farm (ASPF)</a> as part of its <a href="research.html">agriculture research and innovation</a> work.</p>
         <p class="cta">
-          <a class="btn" href="how-it-works.html">How it works</a>
+          <a class="btn" href="#demo">Try the live demo</a>
+          <a class="btn ghost" href="how-it-works.html">How it works</a>
           <a class="btn ghost" href="about.html">About ASPF</a>
         </p>
       </div>
@@ -61,6 +63,37 @@
       <div class="stat"><strong>Mathematical</strong><span>signals, waveforms, transforms</span></div>
       <div class="stat"><strong>Agricultural</strong><span>sensor and measurement focus</span></div>
       <div class="stat"><strong>Private</strong><span>core algorithms confidential</span></div>
+    </section>
+
+    
+    <section id="demo" class="wrap demo reveal">
+      <h2>Live demo: generate and inspect a waveform</h2>
+      <p>This runs entirely in your browser — nothing is sent anywhere. Choose a simple signal, adjust frequency and noise, and see the time-domain waveform update in real time.</p>
+      <noscript><p class="note">The live demo needs JavaScript. Everything else on this site works without it.</p></noscript>
+      <div id="demo-app" class="demo-app" hidden>
+        <div class="demo-controls">
+          <label class="field"><span>Signal</span>
+            <select id="demo-type">
+              <option value="sine">Sine</option>
+              <option value="square">Square</option>
+              <option value="triangle">Triangle</option>
+              <option value="pulse">Pulse</option>
+            </select>
+          </label>
+          <label class="field"><span>Frequency: <output id="demo-freq-out">5</output> Hz</span>
+            <input id="demo-freq" type="range" min="1" max="20" step="1" value="5">
+          </label>
+          <label class="field"><span>Noise: <output id="demo-noise-out">0.1</output></span>
+            <input id="demo-noise" type="range" min="0" max="1" step="0.05" value="0.1">
+          </label>
+        </div>
+        <div class="demo-actions">
+          <button class="btn small" id="demo-animate" type="button">Animate</button>
+          <button class="btn small ghost" id="demo-reset" type="button">Reset</button>
+        </div>
+        <canvas id="demo-canvas" width="800" height="220" style="width:100%;height:auto;background:var(--surface-2);border-radius:10px;border:1px solid var(--line);"></canvas>
+        <p class="small">Simple illustrative waveform only. No private algorithms or real sensor data are used.</p>
+      </div>
     </section>
 
     <section id="what" class="wrap reveal">
@@ -169,7 +202,8 @@
       <p><a href="about.html">Agriculture Service of Product Farm (ASPF)</a> ·
         <a href="research.html">Agriculture research & innovation</a> ·
         <a href="sbruice-singh.html">Sbruice Singh</a></p>
-      <p><a href="how-it-works.html">How it works</a> ·
+      <p><a href="index.html#demo">Live demo</a>
+        <a href="how-it-works.html">How it works</a> ·
         <a href="security.html">Security model</a> · <a href="evidence.html">Documentation & evidence</a></p>
       <p>© 2026 Sbruice Singh · Agriculture Service of Product Farm (ASPF). All rights reserved.</p>
       <p class="small">AUDP-DSP is proprietary software of ASPF and is not open source. Any use requires a
