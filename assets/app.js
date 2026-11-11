@@ -62,7 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-/* --------------------------------------------------------------- advanced waveform demo */
+
+/* --------------------------------------------------------------- real-time signal demo */
 (function initDemo() {
   const box = document.getElementById("demo-app");
   if (!box) return;
@@ -75,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const noiseOut = document.getElementById("demo-noise-out");
   const smoothIn = document.getElementById("demo-smooth");
   const smoothOut = document.getElementById("demo-smooth-out");
+  const cutIn = document.getElementById("demo-cut");
+  const cutOut = document.getElementById("demo-cut-out");
   const viewSel = document.getElementById("demo-view");
   const canvas = document.getElementById("demo-canvas");
   const spec = document.getElementById("demo-spectrum");
@@ -82,12 +85,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeWrap = document.getElementById("demo-time-wrap");
   const specWrap = document.getElementById("demo-spec-wrap");
   const fallWrap = document.getElementById("demo-fall-wrap");
+  const mRms = document.getElementById("m-rms");
+  const mPeak = document.getElementById("m-peak");
+  const mDom = document.getElementById("m-dom");
+  const mEnergy = document.getElementById("m-energy");
   const ctx = canvas.getContext("2d");
   const sctx = spec.getContext("2d");
   const fctx = fall.getContext("2d");
   let animating = false, paused = false, phase = 0, raf = null;
   const history = [];
   const MAX_HIST = 48;
+  const FS = 200; // illustrative sample rate
 
   function sample(t, type, freq, noise) {
     let s = 0;
@@ -122,6 +130,18 @@ document.addEventListener("DOMContentLoaded", function () {
     return out;
   }
 
+  function simpleLowpass(arr, cutoff) {
+    // one-pole IIR for illustration
+    const alpha = Math.min(0.95, Math.max(0.02, cutoff));
+    const out = new Array(arr.length);
+    let y = arr[0] || 0;
+    for (let i = 0; i < arr.length; i++) {
+      y = y + alpha * (arr[i] - y);
+      out[i] = y;
+    }
+    return out;
+  }
+
   function magnitudeSpectrum(arr) {
     const N = arr.length;
     const mag = new Array(Math.floor(N / 2));
@@ -149,13 +169,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const freq = +freqIn.value;
     const noise = +noiseIn.value;
     const win = +smoothIn.value;
+    const cut = +cutIn.value;
     const N = 360;
     const raw = [];
     for (let i = 0; i < N; i++) raw.push(sample((i / N) + phase, type, freq, noise));
-    const smooth = movingAverage(raw, win);
-    const mag = magnitudeSpectrum(smooth);
+    const smoothed = movingAverage(raw, win);
+    const filtered = simpleLowpass(smoothed, cut);
+    const mag = magnitudeSpectrum(filtered);
     history.unshift(mag.slice(0, 80));
     if (history.length > MAX_HIST) history.pop();
+
+    // real-time metrics
+    let sumSq = 0, peak = 0;
+    for (let i = 0; i < filtered.length; i++) {
+      const v = filtered[i];
+      sumSq += v * v;
+      if (Math.abs(v) > peak) peak = Math.abs(v);
+    }
+    const rms = Math.sqrt(sumSq / filtered.length);
+    const energy = sumSq;
+    let domBin = 1, domVal = 0;
+    for (let k = 1; k < Math.min(mag.length, 80); k++) {
+      if (mag[k] > domVal) { domVal = mag[k]; domBin = k; }
+    }
+    const domHz = (domBin * FS / N).toFixed(1);
+
+    if (mRms) mRms.textContent = rms.toFixed(3);
+    if (mPeak) mPeak.textContent = peak.toFixed(3);
+    if (mDom) mDom.textContent = domHz + " Hz";
+    if (mEnergy) mEnergy.textContent = energy.toFixed(1);
 
     const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0b6fae";
 
@@ -173,8 +215,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         ctx.stroke();
       }
-      plot(raw, accent, 1.6);
-      plot(smooth, "#2e9e3a", 2.2);
+      plot(raw, accent, 1.4);
+      plot(filtered, "#2e9e3a", 2.2);
     }
 
     if (!specWrap.hidden) {
@@ -215,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
     freqOut.textContent = freqIn.value;
     noiseOut.textContent = noiseIn.value;
     smoothOut.textContent = smoothIn.value;
+    if (cutOut) cutOut.textContent = cutIn.value;
   }
 
   function loop() {
@@ -228,6 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
   freqIn.addEventListener("input", () => { updateLabels(); draw(); });
   noiseIn.addEventListener("input", () => { updateLabels(); draw(); });
   smoothIn.addEventListener("input", () => { updateLabels(); draw(); });
+  if (cutIn) cutIn.addEventListener("input", () => { updateLabels(); draw(); });
   viewSel.addEventListener("change", () => { updateViews(); draw(); });
 
   document.getElementById("demo-animate").addEventListener("click", function () {
@@ -246,7 +290,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("demo-reset").addEventListener("click", () => {
     animating = false; paused = false;
     if (raf) cancelAnimationFrame(raf);
-    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.12; smoothIn.value = 7; viewSel.value = "both";
+    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.12; smoothIn.value = 7;
+    if (cutIn) cutIn.value = 0.4;
+    viewSel.value = "both";
     phase = 0; history.length = 0;
     updateLabels(); updateViews(); draw();
     document.getElementById("demo-animate").textContent = "Animate";

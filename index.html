@@ -98,6 +98,15 @@
               <option value="waterfall">Waterfall</option>
             </select>
           </label>
+          <label class="field"><span>Filter cutoff: <output id="demo-cut-out">0.4</output></span>
+            <input id="demo-cut" type="range" min="0.05" max="0.9" step="0.05" value="0.4">
+          </label>
+        </div>
+        <div class="demo-metrics" id="demo-metrics">
+          <div><dt>RMS</dt><dd id="m-rms">—</dd></div>
+          <div><dt>Peak</dt><dd id="m-peak">—</dd></div>
+          <div><dt>Dominant Hz</dt><dd id="m-dom">—</dd></div>
+          <div><dt>Energy</dt><dd id="m-energy">—</dd></div>
         </div>
         <div class="demo-actions">
           <button class="btn small" id="demo-animate" type="button">Animate</button>
