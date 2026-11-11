@@ -63,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-/* --------------------------------------------------------------- real-time signal demo */
+
+/* --------------------------------------------------------------- advanced filter demo */
 (function initDemo() {
   const box = document.getElementById("demo-app");
   if (!box) return;
@@ -76,8 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const noiseOut = document.getElementById("demo-noise-out");
   const smoothIn = document.getElementById("demo-smooth");
   const smoothOut = document.getElementById("demo-smooth-out");
+  const ftypeSel = document.getElementById("demo-ftype");
   const cutIn = document.getElementById("demo-cut");
   const cutOut = document.getElementById("demo-cut-out");
+  const bwIn = document.getElementById("demo-bw");
+  const bwOut = document.getElementById("demo-bw-out");
   const viewSel = document.getElementById("demo-view");
   const canvas = document.getElementById("demo-canvas");
   const spec = document.getElementById("demo-spectrum");
@@ -95,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let animating = false, paused = false, phase = 0, raf = null;
   const history = [];
   const MAX_HIST = 48;
-  const FS = 200; // illustrative sample rate
+  const FS = 200;
 
   function sample(t, type, freq, noise) {
     let s = 0;
@@ -130,16 +134,41 @@ document.addEventListener("DOMContentLoaded", function () {
     return out;
   }
 
-  function simpleLowpass(arr, cutoff) {
-    // one-pole IIR for illustration
-    const alpha = Math.min(0.95, Math.max(0.02, cutoff));
+  function onePoleLow(arr, alpha) {
+    const a = Math.min(0.95, Math.max(0.02, alpha));
     const out = new Array(arr.length);
     let y = arr[0] || 0;
     for (let i = 0; i < arr.length; i++) {
-      y = y + alpha * (arr[i] - y);
+      y = y + a * (arr[i] - y);
       out[i] = y;
     }
     return out;
+  }
+
+  function onePoleHigh(arr, alpha) {
+    const lp = onePoleLow(arr, alpha);
+    return arr.map((v, i) => v - lp[i]);
+  }
+
+  function bandPass(arr, center, bw) {
+    const lo = Math.max(0.02, center - bw / 2);
+    const hi = Math.min(0.95, center + bw / 2);
+    const hp = onePoleHigh(arr, lo);
+    return onePoleLow(hp, hi);
+  }
+
+  function envelope(arr) {
+    const abs = arr.map(v => Math.abs(v));
+    return onePoleLow(abs, 0.15);
+  }
+
+  function applyFilter(arr, ftype, cut, bw) {
+    if (ftype === "none") return arr.slice();
+    if (ftype === "lowpass") return onePoleLow(arr, cut);
+    if (ftype === "highpass") return onePoleHigh(arr, cut);
+    if (ftype === "bandpass") return bandPass(arr, cut, bw);
+    if (ftype === "envelope") return envelope(arr);
+    return arr.slice();
   }
 
   function magnitudeSpectrum(arr) {
@@ -169,17 +198,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const freq = +freqIn.value;
     const noise = +noiseIn.value;
     const win = +smoothIn.value;
-    const cut = +cutIn.value;
+    const ftype = ftypeSel ? ftypeSel.value : "lowpass";
+    const cut = cutIn ? +cutIn.value : 0.4;
+    const bw = bwIn ? +bwIn.value : 0.2;
     const N = 360;
     const raw = [];
     for (let i = 0; i < N; i++) raw.push(sample((i / N) + phase, type, freq, noise));
     const smoothed = movingAverage(raw, win);
-    const filtered = simpleLowpass(smoothed, cut);
+    const filtered = applyFilter(smoothed, ftype, cut, bw);
     const mag = magnitudeSpectrum(filtered);
     history.unshift(mag.slice(0, 80));
     if (history.length > MAX_HIST) history.pop();
 
-    // real-time metrics
     let sumSq = 0, peak = 0;
     for (let i = 0; i < filtered.length; i++) {
       const v = filtered[i];
@@ -224,12 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
       sctx.clearRect(0, 0, sw, sh);
       const maxM = Math.max(...mag, 1e-6);
       const bins = Math.min(mag.length, 90);
-      const bw = sw / bins;
+      const bwpx = sw / bins;
       for (let k = 0; k < bins; k++) {
         const bh = (mag[k] / maxM) * (sh - 10);
         const hue = 190 + (k / bins) * 50;
         sctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-        sctx.fillRect(k * bw + 1, sh - bh - 3, bw - 2, bh);
+        sctx.fillRect(k * bwpx + 1, sh - bh - 3, bwpx - 2, bh);
       }
     }
 
@@ -257,7 +287,8 @@ document.addEventListener("DOMContentLoaded", function () {
     freqOut.textContent = freqIn.value;
     noiseOut.textContent = noiseIn.value;
     smoothOut.textContent = smoothIn.value;
-    if (cutOut) cutOut.textContent = cutIn.value;
+    if (cutOut && cutIn) cutOut.textContent = cutIn.value;
+    if (bwOut && bwIn) bwOut.textContent = bwIn.value;
   }
 
   function loop() {
@@ -271,7 +302,9 @@ document.addEventListener("DOMContentLoaded", function () {
   freqIn.addEventListener("input", () => { updateLabels(); draw(); });
   noiseIn.addEventListener("input", () => { updateLabels(); draw(); });
   smoothIn.addEventListener("input", () => { updateLabels(); draw(); });
+  if (ftypeSel) ftypeSel.addEventListener("change", draw);
   if (cutIn) cutIn.addEventListener("input", () => { updateLabels(); draw(); });
+  if (bwIn) bwIn.addEventListener("input", () => { updateLabels(); draw(); });
   viewSel.addEventListener("change", () => { updateViews(); draw(); });
 
   document.getElementById("demo-animate").addEventListener("click", function () {
@@ -291,7 +324,9 @@ document.addEventListener("DOMContentLoaded", function () {
     animating = false; paused = false;
     if (raf) cancelAnimationFrame(raf);
     typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.12; smoothIn.value = 7;
+    if (ftypeSel) ftypeSel.value = "lowpass";
     if (cutIn) cutIn.value = 0.4;
+    if (bwIn) bwIn.value = 0.2;
     viewSel.value = "both";
     phase = 0; history.length = 0;
     updateLabels(); updateViews(); draw();

@@ -98,8 +98,20 @@
               <option value="waterfall">Waterfall</option>
             </select>
           </label>
-          <label class="field"><span>Filter cutoff: <output id="demo-cut-out">0.4</output></span>
+          <label class="field"><span>Filter type</span>
+            <select id="demo-ftype">
+              <option value="lowpass">Low-pass</option>
+              <option value="highpass">High-pass</option>
+              <option value="bandpass">Band-pass</option>
+              <option value="envelope">Envelope</option>
+              <option value="none">None</option>
+            </select>
+          </label>
+          <label class="field"><span>Cutoff / center: <output id="demo-cut-out">0.4</output></span>
             <input id="demo-cut" type="range" min="0.05" max="0.9" step="0.05" value="0.4">
+          </label>
+          <label class="field"><span>Bandwidth: <output id="demo-bw-out">0.2</output></span>
+            <input id="demo-bw" type="range" min="0.05" max="0.6" step="0.05" value="0.2">
           </label>
         </div>
         <div class="demo-metrics" id="demo-metrics">
