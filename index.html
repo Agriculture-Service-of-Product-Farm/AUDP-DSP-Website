@@ -41,10 +41,10 @@
     header img { height: 48px; width: auto; }
     header h1 { font-size: 1.3rem; font-weight: 600; }
     header .org { color: var(--muted); font-size: 0.85rem; }
-    nav a { color: var(--muted); text-decoration: none; margin-left: 1.25rem; font-size: 0.95rem; }
+    nav a { color: var(--muted); text-decoration: none; margin-left: 1.1rem; font-size: 0.9rem; }
     nav a:hover { color: var(--accent); }
-    main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
-    .hero { text-align: center; margin-bottom: 3rem; }
+    main { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+    .hero { text-align: center; margin-bottom: 2.75rem; }
     .badge {
       display: inline-block;
       background: #1b3a1b;
@@ -55,7 +55,7 @@
       margin-bottom: 1rem;
     }
     .hero h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--gold); }
-    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 680px; margin: 0 auto; }
+    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 700px; margin: 0 auto; }
     section { margin-bottom: 2.5rem; }
     section h3 {
       color: var(--accent);
@@ -86,6 +86,8 @@
       margin-top: 1rem;
     }
     .notice p { color: var(--muted); font-size: 0.92rem; }
+    ul { margin: 0.5rem 0 0 1.2rem; color: var(--muted); font-size: 0.95rem; }
+    li { margin-bottom: 0.35rem; }
     footer {
       background: var(--surface);
       border-top: 1px solid #1b3a1b;
@@ -109,7 +111,9 @@
     </div>
     <nav>
       <a href="#about">About</a>
+      <a href="#purpose">Purpose</a>
       <a href="#focus">Focus</a>
+      <a href="#domains">Domains</a>
       <a href="#boundary">Information</a>
     </nav>
   </header>
@@ -123,7 +127,18 @@
 
     <section id="about">
       <h3>About ASPF</h3>
-      <p>Agriculture Service of Product Farm (ASPF) is a research-oriented organization focused on agriculture solutions, including consultancy, precision hardware, compliance support, software services, and data-driven approaches for farming and related scientific work. Headquarters are in Azamgarh, Uttar Pradesh, India. Official site: <a href="https://www.apservicefarm.com" style="color:var(--accent);">apservicefarm.com</a>.</p>
+      <p>Agriculture Service of Product Farm (ASPF) is a research-oriented organization focused on agriculture solutions. Its work includes consultancy for farming practices, precision hardware, compliance support, software and services, and data-driven approaches that help improve agricultural operations. ASPF is headquartered in Azamgarh, Uttar Pradesh, India. Official site: <a href="https://www.apservicefarm.com" style="color:var(--accent);">apservicefarm.com</a>.</p>
+    </section>
+
+    <section id="purpose">
+      <h3>Purpose of AUDP-DSP</h3>
+      <p>AUDP-DSP provides a software-defined environment for studying, generating, analyzing, and transforming numerical signals and waveforms. It is intended to support research into how measurement data from agricultural and related instruments can be represented, processed, and examined using mathematical methods.</p>
+      <ul>
+        <li>Support reproducible numerical experiments on signals and waveforms</li>
+        <li>Provide a foundation for analysis of sensor and instrument data</li>
+        <li>Enable research into filtering, transformation, and reconstruction techniques</li>
+        <li>Remain independent of any specific networking or protocol layer</li>
+      </ul>
     </section>
 
     <section id="focus">
@@ -131,43 +146,61 @@
       <div class="grid">
         <div class="card">
           <h4>Signal Generation</h4>
-          <p>Creation of mathematically defined signals and waveforms for research and simulation.</p>
+          <p>Creation of mathematically defined signals and waveforms for research and controlled simulation.</p>
         </div>
         <div class="card">
           <h4>Signal Analysis</h4>
-          <p>Study of frequency, amplitude, phase, energy, and statistical properties of signals.</p>
+          <p>Study of frequency content, amplitude, phase, energy, and basic statistical properties.</p>
         </div>
         <div class="card">
           <h4>Transformation</h4>
-          <p>Filtering, Fourier-based methods, convolution, and multirate processing for research use.</p>
+          <p>Research use of filtering, Fourier-based methods, convolution, and multirate ideas.</p>
         </div>
         <div class="card">
           <h4>Agricultural Sensing</h4>
-          <p>Support for processing sensor and measurement data relevant to agricultural applications.</p>
+          <p>Support for processing measurement data relevant to agricultural instruments and sensors.</p>
         </div>
         <div class="card">
           <h4>Simulation</h4>
-          <p>Controlled numerical experiments involving noise, sampling, and channel effects.</p>
+          <p>Controlled numerical experiments involving noise, sampling, and simple channel effects.</p>
         </div>
         <div class="card">
           <h4>Research Platform</h4>
-          <p>Independent software-defined framework that can support later integration with broader ASPF systems.</p>
+          <p>Independent software-defined framework that can later support integration with broader ASPF work.</p>
         </div>
       </div>
+    </section>
+
+    <section id="domains">
+      <h3>Application Domains</h3>
+      <p>AUDP-DSP is oriented toward research involving measurement and signal data that may arise in agricultural and related settings, including:</p>
+      <div class="grid">
+        <div class="card"><h4>Soil and Moisture</h4><p>Time series and sensor readings related to soil conditions.</p></div>
+        <div class="card"><h4>Water Monitoring</h4><p>Level, flow, and quality measurement signals.</p></div>
+        <div class="card"><h4>Weather and Climate</h4><p>Instrument data from weather stations and environmental sensors.</p></div>
+        <div class="card"><h4>Machinery and Equipment</h4><p>Vibration and operational signals from agricultural machinery.</p></div>
+        <div class="card"><h4>Aerial Platforms</h4><p>Sensor streams that may be collected from drones or similar platforms.</p></div>
+        <div class="card"><h4>General Scientific</h4><p>Other numerical waveform and sensor data used in research experiments.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Research Approach</h3>
+      <p>The platform emphasizes mathematical clarity, reproducible numerical behavior, and separation between measured observations, numerical signal representations, and derived analytical results. It is designed so that research results can be traced to defined models and validated procedures. Detailed algorithms, implementations, and internal specifications are not published on this site.</p>
     </section>
 
     <section id="boundary">
       <h3>Public Information Boundary</h3>
       <div class="notice">
-        <p>This site contains only general public information. Technical specifications, detailed algorithms, implementation internals, source code structure, test vectors, and internal documentation are not published here. They are maintained under controlled access in private repositories.</p>
-        <p style="margin-top:0.6rem;">No sensitive, proprietary, or operational details are disclosed. This page does not provide downloads, technical support, or access to source code.</p>
+        <p>This site contains only general public information. Technical specifications, detailed algorithms, implementation internals, source code structure, test vectors, numerical contracts, and internal documentation are not published here. They are maintained under controlled access in private repositories.</p>
+        <p style="margin-top:0.6rem;">No sensitive, proprietary, or operational details are disclosed. This page does not provide downloads, technical support, API access, or source code.</p>
       </div>
     </section>
 
     <section>
       <h3>Security</h3>
       <div class="notice">
-        <p>This is a static site with a strict Content Security Policy, no external resources, no trackers, no forms, and no client-side data collection. Content is served as static files only.</p>
+        <p>This is a static site with a strict Content Security Policy, no external resources, no trackers, no forms, and no client-side data collection. All content is served as static files only.</p>
       </div>
     </section>
   </main>
