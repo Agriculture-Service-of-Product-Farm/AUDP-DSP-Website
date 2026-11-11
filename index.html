@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="theme-color" content="#0a1f0a">
+  <title>AUDP-DSP | Agriculture Service of Product Farm</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    :root {
+      --bg: #0a1f0a;
+      --surface: #112a12;
+      --text: #e8f5e9;
+      --muted: #a5d6a7;
+      --accent: #4caf50;
+      --gold: #ffc107;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--accent);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    header img { height: 56px; width: auto; }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header .org { color: var(--muted); font-size: 0.9rem; }
+    main {
+      flex: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    .hero { margin-bottom: 2.5rem; }
+    .hero h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold); }
+    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 600px; margin: 0 auto; }
+    .notice {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      text-align: left;
+    }
+    .notice h3 { color: var(--accent); margin-bottom: 0.5rem; }
+    .notice p { color: var(--muted); font-size: 0.95rem; }
+    footer {
+      background: var(--surface);
+      border-top: 1px solid #1b3a1b;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-block;
+      background: #1b3a1b;
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="AUDP-DSP">
+    <div>
+      <h1>AUDP-DSP</h1>
+      <div class="org">Agriculture Service of Product Farm (ASPF)</div>
+    </div>
+  </header>
+  <main>
+    <div class="hero">
+      <span class="badge">RESEARCH PLATFORM</span>
+      <h2>Software-Defined Signal Processing</h2>
+      <p>AUDP-DSP is a research and engineering platform for mathematical signal processing supporting agricultural sensing and related applications.</p>
+    </div>
+    <div class="notice">
+      <h3>Public Information Boundary</h3>
+      <p>This site contains only general public information. Technical specifications, algorithms, implementation details, architectures, source structure, and internal documentation are not published here and are maintained under controlled access.</p>
+      <p style="margin-top: 0.75rem;">No sensitive, proprietary, or operational information is disclosed on this page.</p>
+    </div>
+    <div class="notice">
+      <h3>Security</h3>
+      <p>This static site implements strict Content Security Policy, no external resources, no trackers, no forms, and no client-side data collection. All content is served as static files only.</p>
+    </div>
+  </main>
+  <footer>
+    <p>Agriculture Service of Product Farm (ASPF)</p>
+    <p style="margin-top: 0.5rem;">AUDP-DSP &mdash; Internal research platform</p>
+    <p style="margin-top: 0.75rem; font-size: 0.75rem;">This page does not provide technical support, downloads, or access to source code.</p>
+  </footer>
+</body>
+</html>
