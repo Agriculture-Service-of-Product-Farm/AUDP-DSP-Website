@@ -211,18 +211,19 @@ document.addEventListener("DOMContentLoaded", function () {
     if (history.length > MAX_HIST) history.pop();
 
     let sumSq = 0, peak = 0;
+    const flen = filtered.length || 1;
     for (let i = 0; i < filtered.length; i++) {
-      const v = filtered[i];
+      const v = filtered[i] || 0;
       sumSq += v * v;
       if (Math.abs(v) > peak) peak = Math.abs(v);
     }
-    const rms = Math.sqrt(sumSq / filtered.length);
+    const rms = Math.sqrt(sumSq / flen);
     const energy = sumSq;
     let domBin = 1, domVal = 0;
     for (let k = 1; k < Math.min(mag.length, 80); k++) {
       if (mag[k] > domVal) { domVal = mag[k]; domBin = k; }
     }
-    const domHz = (domBin * FS / N).toFixed(1);
+    const domHz = (N > 0 ? (domBin * FS / N) : 0).toFixed(1);
 
     if (mRms) mRms.textContent = rms.toFixed(3);
     if (mPeak) mPeak.textContent = peak.toFixed(3);
