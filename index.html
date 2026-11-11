@@ -67,8 +67,8 @@
 
     
     <section id="demo" class="wrap demo reveal">
-      <h2>Live demo: generate and inspect a waveform</h2>
-      <p>This runs entirely in your browser — nothing is sent anywhere. Choose a simple signal, adjust frequency and noise, and see the time-domain waveform update in real time.</p>
+      <h2>Live demo: generate, smooth, and view a spectrum</h2>
+      <p>This runs entirely in your browser — nothing is sent anywhere. Generate a waveform, apply simple smoothing, and inspect a basic magnitude spectrum. Illustrates generation, light filtering, and frequency-domain inspection.</p>
       <noscript><p class="note">The live demo needs JavaScript. Everything else on this site works without it.</p></noscript>
       <div id="demo-app" class="demo-app" hidden>
         <div class="demo-controls">
@@ -77,25 +77,30 @@
               <option value="sine">Sine</option>
               <option value="square">Square</option>
               <option value="triangle">Triangle</option>
-              <option value="pulse">Pulse</option>
+              <option value="chirp">Chirp</option>
             </select>
           </label>
           <label class="field"><span>Frequency: <output id="demo-freq-out">5</output> Hz</span>
-            <input id="demo-freq" type="range" min="1" max="20" step="1" value="5">
+            <input id="demo-freq" type="range" min="1" max="30" step="1" value="5">
           </label>
-          <label class="field"><span>Noise: <output id="demo-noise-out">0.1</output></span>
-            <input id="demo-noise" type="range" min="0" max="1" step="0.05" value="0.1">
+          <label class="field"><span>Noise: <output id="demo-noise-out">0.15</output></span>
+            <input id="demo-noise" type="range" min="0" max="1" step="0.05" value="0.15">
+          </label>
+          <label class="field"><span>Smoothing: <output id="demo-smooth-out">5</output></span>
+            <input id="demo-smooth" type="range" min="1" max="21" step="2" value="5">
           </label>
         </div>
         <div class="demo-actions">
           <button class="btn small" id="demo-animate" type="button">Animate</button>
           <button class="btn small ghost" id="demo-reset" type="button">Reset</button>
         </div>
-        <canvas id="demo-canvas" width="800" height="220" style="width:100%;height:auto;background:var(--surface-2);border-radius:10px;border:1px solid var(--line);"></canvas>
-        <p class="small">Simple illustrative waveform only. No private algorithms or real sensor data are used.</p>
+        <p class="small">Time domain — original (accent) and smoothed (green)</p>
+        <canvas id="demo-canvas" width="900" height="200" style="width:100%;height:auto;background:var(--surface-2);border-radius:10px;border:1px solid var(--line);margin-bottom:12px;"></canvas>
+        <p class="small">Simple magnitude spectrum (illustrative)</p>
+        <canvas id="demo-spectrum" width="900" height="140" style="width:100%;height:auto;background:var(--surface-2);border-radius:10px;border:1px solid var(--line);"></canvas>
+        <p class="small">Browser-only illustration. No private algorithms, coefficients, or real sensor data.</p>
       </div>
     </section>
-
     <section id="what" class="wrap reveal">
       <h2>What it is</h2>
       <p>Agricultural instruments and sensors produce measurement signals: soil moisture time series, water levels, weather readings, machinery vibration, and data from aerial platforms. AUDP-DSP is the software layer that supports research into representing, analyzing, filtering, and reconstructing these signals using mathematical methods.</p>

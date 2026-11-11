@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+
 /* --------------------------------------------------------------- waveform demo */
 (function initDemo() {
   const box = document.getElementById("demo-app");
@@ -71,79 +72,134 @@ document.addEventListener("DOMContentLoaded", function () {
   const freqOut = document.getElementById("demo-freq-out");
   const noiseIn = document.getElementById("demo-noise");
   const noiseOut = document.getElementById("demo-noise-out");
+  const smoothIn = document.getElementById("demo-smooth");
+  const smoothOut = document.getElementById("demo-smooth-out");
   const canvas = document.getElementById("demo-canvas");
+  const spec = document.getElementById("demo-spectrum");
   const ctx = canvas.getContext("2d");
+  const sctx = spec.getContext("2d");
   let animating = false;
   let phase = 0;
   let raf = null;
 
   function sample(t, type, freq, noise) {
-    const w = 2 * Math.PI * freq * t;
     let s = 0;
-    if (type === "sine") s = Math.sin(w);
-    else if (type === "square") s = Math.sin(w) >= 0 ? 1 : -1;
-    else if (type === "triangle") s = (2 / Math.PI) * Math.asin(Math.sin(w));
-    else if (type === "pulse") s = Math.sin(w) > 0.7 ? 1 : 0;
-    const n = (Math.random() * 2 - 1) * noise;
-    return Math.max(-1.2, Math.min(1.2, s + n));
+    if (type === "chirp") {
+      const f0 = Math.max(1, freq * 0.3);
+      const f1 = freq * 2;
+      const k = (f1 - f0) / 1.0;
+      s = Math.sin(2 * Math.PI * (f0 * t + 0.5 * k * t * t));
+    } else {
+      const w = 2 * Math.PI * freq * t;
+      if (type === "sine") s = Math.sin(w);
+      else if (type === "square") s = Math.sin(w) >= 0 ? 1 : -1;
+      else if (type === "triangle") s = (2 / Math.PI) * Math.asin(Math.sin(w));
+      else s = Math.sin(w);
+    }
+    return Math.max(-1.3, Math.min(1.3, s + (Math.random() * 2 - 1) * noise));
+  }
+
+  function movingAverage(arr, win) {
+    const out = new Array(arr.length);
+    const half = Math.floor(win / 2);
+    for (let i = 0; i < arr.length; i++) {
+      let sum = 0, c = 0;
+      for (let k = -half; k <= half; k++) {
+        const j = i + k;
+        if (j >= 0 && j < arr.length) { sum += arr[j]; c++; }
+      }
+      out[i] = c ? sum / c : 0;
+    }
+    return out;
+  }
+
+  function magnitudeSpectrum(arr) {
+    const N = arr.length;
+    const mag = new Array(Math.floor(N / 2));
+    for (let k = 0; k < mag.length; k++) {
+      let re = 0, im = 0;
+      for (let n = 0; n < N; n++) {
+        const ang = -2 * Math.PI * k * n / N;
+        re += arr[n] * Math.cos(ang);
+        im += arr[n] * Math.sin(ang);
+      }
+      mag[k] = Math.sqrt(re * re + im * im) / N;
+    }
+    return mag;
   }
 
   function draw() {
     const w = canvas.width, h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent") || "#0b6fae";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
     const type = typeSel.value;
     const freq = +freqIn.value;
     const noise = +noiseIn.value;
-    const N = 400;
-    for (let i = 0; i < N; i++) {
-      const t = (i / N) * 1 + phase;
-      const y = sample(t, type, freq, noise);
-      const x = (i / (N - 1)) * w;
-      const py = h / 2 - (y / 1.2) * (h / 2 - 10);
-      if (i === 0) ctx.moveTo(x, py); else ctx.lineTo(x, py);
+    const win = +smoothIn.value;
+    const N = 360;
+    const raw = [];
+    for (let i = 0; i < N; i++) raw.push(sample((i / N) + phase, type, freq, noise));
+    const smooth = movingAverage(raw, win);
+
+    ctx.clearRect(0, 0, w, h);
+    // center
+    ctx.strokeStyle = "rgba(128,128,128,0.25)";
+    ctx.beginPath(); ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+
+    function plot(data, color) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      for (let i = 0; i < data.length; i++) {
+        const x = (i / (data.length - 1)) * w;
+        const y = h / 2 - (data[i] / 1.3) * (h / 2 - 8);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
     }
-    ctx.stroke();
-    // center line
-    ctx.strokeStyle = "rgba(128,128,128,0.3)";
-    ctx.beginPath();
-    ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); ctx.stroke();
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#0b6fae";
+    plot(raw, accent);
+    plot(smooth, "#2e9e3a");
+
+    // spectrum of smoothed
+    const mag = magnitudeSpectrum(smooth);
+    const sw = spec.width, sh = spec.height;
+    sctx.clearRect(0, 0, sw, sh);
+    const maxM = Math.max(...mag, 1e-6);
+    sctx.fillStyle = accent;
+    const bins = Math.min(mag.length, 80);
+    const bw = sw / bins;
+    for (let k = 0; k < bins; k++) {
+      const bh = (mag[k] / maxM) * (sh - 12);
+      sctx.fillRect(k * bw + 1, sh - bh - 4, bw - 2, bh);
+    }
   }
 
   function updateLabels() {
     freqOut.textContent = freqIn.value;
     noiseOut.textContent = noiseIn.value;
+    smoothOut.textContent = smoothIn.value;
   }
 
   function loop() {
     if (!animating) return;
-    phase += 0.02;
+    phase += 0.015;
     draw();
     raf = requestAnimationFrame(loop);
   }
 
-  function startAnim() {
-    if (animating) return;
-    animating = true;
-    loop();
-  }
-  function stopAnim() {
-    animating = false;
-    if (raf) cancelAnimationFrame(raf);
-  }
-
-  typeSel.addEventListener("change", () => { draw(); });
+  typeSel.addEventListener("change", draw);
   freqIn.addEventListener("input", () => { updateLabels(); draw(); });
   noiseIn.addEventListener("input", () => { updateLabels(); draw(); });
-  document.getElementById("demo-animate").addEventListener("click", () => {
-    if (animating) { stopAnim(); document.getElementById("demo-animate").textContent = "Animate"; }
-    else { startAnim(); document.getElementById("demo-animate").textContent = "Stop"; }
+  smoothIn.addEventListener("input", () => { updateLabels(); draw(); });
+  document.getElementById("demo-animate").addEventListener("click", function () {
+    animating = !animating;
+    this.textContent = animating ? "Stop" : "Animate";
+    if (animating) loop();
+    else if (raf) cancelAnimationFrame(raf);
   });
   document.getElementById("demo-reset").addEventListener("click", () => {
-    stopAnim();
-    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.1; phase = 0;
+    animating = false;
+    if (raf) cancelAnimationFrame(raf);
+    typeSel.value = "sine"; freqIn.value = 5; noiseIn.value = 0.15; smoothIn.value = 5; phase = 0;
     updateLabels(); draw();
     document.getElementById("demo-animate").textContent = "Animate";
   });
