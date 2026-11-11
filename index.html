@@ -26,48 +26,25 @@
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
     header {
       background: var(--surface);
       border-bottom: 2px solid var(--accent);
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
-    header img { height: 56px; width: auto; }
-    header h1 { font-size: 1.4rem; font-weight: 600; }
-    header .org { color: var(--muted); font-size: 0.9rem; }
-    main {
-      flex: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-      text-align: center;
-    }
-    .hero { margin-bottom: 2.5rem; }
-    .hero h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--gold); }
-    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 600px; margin: 0 auto; }
-    .notice {
-      background: var(--surface);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      text-align: left;
-    }
-    .notice h3 { color: var(--accent); margin-bottom: 0.5rem; }
-    .notice p { color: var(--muted); font-size: 0.95rem; }
-    footer {
-      background: var(--surface);
-      border-top: 1px solid #1b3a1b;
-      padding: 1.5rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
+    .brand { display: flex; align-items: center; gap: 1rem; }
+    header img { height: 48px; width: auto; }
+    header h1 { font-size: 1.3rem; font-weight: 600; }
+    header .org { color: var(--muted); font-size: 0.85rem; }
+    nav a { color: var(--muted); text-decoration: none; margin-left: 1.25rem; font-size: 0.95rem; }
+    nav a:hover { color: var(--accent); }
+    main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+    .hero { text-align: center; margin-bottom: 3rem; }
     .badge {
       display: inline-block;
       background: #1b3a1b;
@@ -77,36 +54,129 @@
       font-size: 0.8rem;
       margin-bottom: 1rem;
     }
+    .hero h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--gold); }
+    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 680px; margin: 0 auto; }
+    section { margin-bottom: 2.5rem; }
+    section h3 {
+      color: var(--accent);
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #1b3a1b;
+      padding-bottom: 0.4rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid #1b3a1b;
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .card h4 { color: var(--gold); margin-bottom: 0.4rem; font-size: 1rem; }
+    .card p { color: var(--muted); font-size: 0.92rem; }
+    .notice {
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+    }
+    .notice p { color: var(--muted); font-size: 0.92rem; }
+    footer {
+      background: var(--surface);
+      border-top: 1px solid #1b3a1b;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="AUDP-DSP">
-    <div>
-      <h1>AUDP-DSP</h1>
-      <div class="org">Agriculture Service of Product Farm (ASPF)</div>
+    <div class="brand">
+      <img src="logo.png" alt="AUDP-DSP">
+      <div>
+        <h1>AUDP-DSP</h1>
+        <div class="org">Agriculture Service of Product Farm (ASPF)</div>
+      </div>
     </div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#focus">Focus</a>
+      <a href="#boundary">Information</a>
+    </nav>
   </header>
+
   <main>
     <div class="hero">
       <span class="badge">RESEARCH PLATFORM</span>
       <h2>Software-Defined Signal Processing</h2>
-      <p>AUDP-DSP is a research and engineering platform for mathematical signal processing supporting agricultural sensing and related applications.</p>
+      <p>AUDP-DSP is a research and engineering platform developed by Agriculture Service of Product Farm (ASPF) for mathematical signal processing in support of agricultural sensing, waveform analysis, and related scientific applications.</p>
     </div>
-    <div class="notice">
+
+    <section id="about">
+      <h3>About ASPF</h3>
+      <p>Agriculture Service of Product Farm (ASPF) is a research-oriented organization focused on agriculture solutions, including consultancy, precision hardware, compliance support, software services, and data-driven approaches for farming and related scientific work. Headquarters are in Azamgarh, Uttar Pradesh, India. Official site: <a href="https://www.apservicefarm.com" style="color:var(--accent);">apservicefarm.com</a>.</p>
+    </section>
+
+    <section id="focus">
+      <h3>AUDP-DSP Focus Areas</h3>
+      <div class="grid">
+        <div class="card">
+          <h4>Signal Generation</h4>
+          <p>Creation of mathematically defined signals and waveforms for research and simulation.</p>
+        </div>
+        <div class="card">
+          <h4>Signal Analysis</h4>
+          <p>Study of frequency, amplitude, phase, energy, and statistical properties of signals.</p>
+        </div>
+        <div class="card">
+          <h4>Transformation</h4>
+          <p>Filtering, Fourier-based methods, convolution, and multirate processing for research use.</p>
+        </div>
+        <div class="card">
+          <h4>Agricultural Sensing</h4>
+          <p>Support for processing sensor and measurement data relevant to agricultural applications.</p>
+        </div>
+        <div class="card">
+          <h4>Simulation</h4>
+          <p>Controlled numerical experiments involving noise, sampling, and channel effects.</p>
+        </div>
+        <div class="card">
+          <h4>Research Platform</h4>
+          <p>Independent software-defined framework that can support later integration with broader ASPF systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="boundary">
       <h3>Public Information Boundary</h3>
-      <p>This site contains only general public information. Technical specifications, algorithms, implementation details, architectures, source structure, and internal documentation are not published here and are maintained under controlled access.</p>
-      <p style="margin-top: 0.75rem;">No sensitive, proprietary, or operational information is disclosed on this page.</p>
-    </div>
-    <div class="notice">
+      <div class="notice">
+        <p>This site contains only general public information. Technical specifications, detailed algorithms, implementation internals, source code structure, test vectors, and internal documentation are not published here. They are maintained under controlled access in private repositories.</p>
+        <p style="margin-top:0.6rem;">No sensitive, proprietary, or operational details are disclosed. This page does not provide downloads, technical support, or access to source code.</p>
+      </div>
+    </section>
+
+    <section>
       <h3>Security</h3>
-      <p>This static site implements strict Content Security Policy, no external resources, no trackers, no forms, and no client-side data collection. All content is served as static files only.</p>
-    </div>
+      <div class="notice">
+        <p>This is a static site with a strict Content Security Policy, no external resources, no trackers, no forms, and no client-side data collection. Content is served as static files only.</p>
+      </div>
+    </section>
   </main>
+
   <footer>
     <p>Agriculture Service of Product Farm (ASPF)</p>
-    <p style="margin-top: 0.5rem;">AUDP-DSP &mdash; Internal research platform</p>
-    <p style="margin-top: 0.75rem; font-size: 0.75rem;">This page does not provide technical support, downloads, or access to source code.</p>
+    <p style="margin-top:0.4rem;">AUDP-DSP &mdash; Research platform for software-defined signal processing</p>
+    <p style="margin-top:0.75rem;"><a href="https://www.apservicefarm.com">apservicefarm.com</a> &middot; Azamgarh, Uttar Pradesh, India</p>
+    <p style="margin-top:0.5rem; font-size:0.75rem;">Public information only. Technical details remain private.</p>
   </footer>
 </body>
 </html>
