@@ -96,6 +96,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const ctx = canvas.getContext("2d");
   const sctx = spec.getContext("2d");
   const fctx = fall.getContext("2d");
+
+  function fitCanvas(c, aspect) {
+    const rect = c.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, Math.floor(rect.width * dpr));
+    const h = Math.max(1, Math.floor((rect.width / aspect) * dpr));
+    if (c.width !== w || c.height !== h) {
+      c.width = w;
+      c.height = h;
+    }
+  }
+  function fitAll() {
+    fitCanvas(canvas, 4.5);
+    fitCanvas(spec, 6.4);
+    fitCanvas(fall, 5);
+  }
+  fitAll();
+  window.addEventListener("resize", () => { fitAll(); draw(); });
   let animating = false, paused = false, phase = 0, raf = null;
   const history = [];
   const MAX_HIST = 48;
@@ -194,6 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function draw() {
+    fitAll();
     const type = typeSel.value;
     const freq = +freqIn.value;
     const noise = +noiseIn.value;

@@ -399,3 +399,24 @@ canvas {
 .stat strong {
   font-size: 22px;
 }
+
+/* responsive canvases — stay inside the demo panel */
+#demo-canvas, #demo-spectrum, #demo-waterfall {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0 0 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  #demo-canvas { height: 160px; }
+  #demo-spectrum { height: 110px; }
+  #demo-waterfall { height: 140px; }
+  .demo-app { padding: 16px; }
+  .demo-metrics { gap: 8px; }
+  .demo-metrics dd { font-size: 16px; }
+}
