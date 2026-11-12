@@ -317,3 +317,85 @@ details.bench-env[open] > summary { border-bottom: 1px solid var(--line); }
 details.bench-env .table-scroll { border: 0; border-radius: 0 0 var(--radius) var(--radius); box-shadow: none; }
 .tag { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
 .tag.warn { background: var(--warn-bg); color: var(--warn); }
+
+/* ----------------------------------------------------------------- polish */
+.hero-home h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.hero-img {
+  filter: drop-shadow(0 8px 24px rgb(11 111 174 / 22%));
+  transition: filter .3s;
+}
+.hero-img:hover {
+  filter: drop-shadow(0 12px 32px rgb(11 111 174 / 30%));
+}
+
+.demo-app {
+  background: linear-gradient(180deg, var(--surface) 0%, color-mix(in srgb, var(--surface) 92%, var(--accent) 8%) 100%);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgb(16 32 48 / 8%), 0 1px 3px rgb(16 32 48 / 4%);
+}
+.demo-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 16px;
+}
+.field select {
+  font: 15px system-ui, sans-serif;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+}
+.field select:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.demo-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.demo-metrics > div {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.demo-metrics dt {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 0;
+}
+.demo-metrics dd {
+  margin: 4px 0 0;
+  font-weight: 700;
+  font-size: 18px;
+  background: var(--text-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+canvas {
+  border-radius: 12px !important;
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 6%);
+}
+.btn {
+  transition: transform .15s, box-shadow .2s, filter .2s;
+}
+.card {
+  transition: transform .2s, box-shadow .25s, border-color .25s;
+}
+.stat strong {
+  font-size: 22px;
+}
